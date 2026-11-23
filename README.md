@@ -23,6 +23,10 @@ npx skills add Objective0/public-skills
 
 | Skill | Author | What it does |
 |---|---|---|
+| [offer-refine](skills/objective0/offer-refine/) | Objective0 | Makes an offer or piece of sales copy worth more to the reader, using Hormozi's value equation: pushed suggestions and a rewrite |
+| [lead-qualifier](skills/objective0/lead-qualifier/) | Objective0 | Researches a company, checks it can pay, scores it against your ideal customer and gives a clear verdict |
+| [mindset-funnel](skills/objective0/mindset-funnel/) | Objective0 | Finds where users get stuck between signup and real use, and the blocker at each stage (Diego de Jódar's Mindset Funnel) |
+| [ai-tell-checker](skills/objective0/ai-tell-checker/) | Objective0 | Checks whether writing reads as AI-generated, with the evidence, and rewrites it to sound like a person |
 | [lean-canvas-coach](skills/objective0/lean-canvas-coach/) | Objective0 | Builds a Lean Canvas with you one question at a time, then challenges the weak assumptions |
 | [experiment-coach](skills/objective0/experiment-coach/) | Objective0 | Turns an idea into an experiment with a clear test, and ranks ideas by impact, confidence and ease |
 | [jobs-and-outcomes](skills/objective0/jobs-and-outcomes/) | Objective0 | Takes you from feature-speak to the job your customer is hiring you for, and the outcomes they want |

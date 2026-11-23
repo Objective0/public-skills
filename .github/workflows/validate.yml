@@ -5,10 +5,24 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check the library
-        run: python3 tools/validate.py
+        with:
+          fetch-depth: 0
+      - name: Check the library, and that a pull request only touches its author's folder
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          BY: ${{ github.event.pull_request.user.login }}
+        run: |
+          if [ -n "$BASE" ]; then
+            git diff --name-only "$BASE" HEAD > "$RUNNER_TEMP/changed.txt"
+            python3 tools/validate.py --changed "$RUNNER_TEMP/changed.txt" --by "$BY"
+          else
+            python3 tools/validate.py
+          fi

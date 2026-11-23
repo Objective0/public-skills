@@ -4,7 +4,7 @@ The easiest way is to let your AI do it: paste the prompt from the [README](READ
 
 ## How it works
 
-- `skills/<your-name>/` is yours: your `author.md` and every skill you write. A contribution only ever touches your own folder.
+- `skills/<your-name>/` is yours: your `author.md` and every skill you write. Your pull request only touches that folder. Everything else in the repo is kept by Objective0, and the check fails a pull request that changes it.
 - A skill's folder name is its permanent public name. Lowercase words joined by hyphens, unique across the whole library, never renamed after it's merged.
 - The full file format is in [AGENTS.md](AGENTS.md). Templates are in [templates/](templates/).
 

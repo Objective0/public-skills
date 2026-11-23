@@ -1,0 +1,58 @@
+name: Submit a skill
+description: Submit a skill without git. Paste your files and we'll turn it into a pull request with your name on it.
+title: "[skill] <skill name>"
+labels: [skill-submission]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The quickest way is to let your AI submit it for you: see the README. Use this form if you (or your AI) can't open a pull request. The format is in [AGENTS.md](https://github.com/Objective0/public-skills/blob/main/AGENTS.md).
+  - type: input
+    id: author
+    attributes:
+      label: Your author folder
+      description: Lowercase words joined by hyphens, like jane-doe. Your folder will be skills/<this>/. Reuse it if you've submitted before.
+      placeholder: jane-doe
+    validations:
+      required: true
+  - type: input
+    id: skill-name
+    attributes:
+      label: Skill folder name
+      description: Lowercase words joined by hyphens. This is the permanent install name.
+      placeholder: first-sales-hire-scorecard
+    validations:
+      required: true
+  - type: textarea
+    id: skill-md
+    attributes:
+      label: SKILL.md
+      description: The whole file, front matter included (see templates/skill/SKILL.md)
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    id: author-md
+    attributes:
+      label: author.md (first submission only)
+      description: The whole file (see templates/author.md)
+      render: markdown
+  - type: textarea
+    id: extra-files
+    attributes:
+      label: Other files (optional)
+      description: "Any references/*.md files, each after a line with its path, like `--- references/examples.md ---`"
+      render: markdown
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Before you submit
+      options:
+        - label: It's on one of the topics (goals, growth, fundraising, product, hiring, business model and strategy, AI workflows) and has a "What good looks like" section
+          required: true
+        - label: It works with any tools, and nothing in it sends data anywhere the reader doesn't own
+          required: true
+        - label: If I sell something related to it, my author.md says so
+          required: true
+        - label: I'm happy for it to be MIT licensed, with credit through my author.md
+          required: true

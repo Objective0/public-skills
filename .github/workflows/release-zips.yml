@@ -1,0 +1,36 @@
+# Builds a zip of every skill (the skill folder at the root, as Claude's upload expects)
+# and puts them all on the "skills-latest" release, replacing the last set.
+name: release-zips
+
+on:
+  push:
+    branches: [main]
+    paths: ["skills/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: release-zips
+
+jobs:
+  zips:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Zip each skill
+        run: |
+          mkdir -p dist
+          for dir in skills/*/*/; do
+            skill=$(basename "$dir"); parent=$(dirname "$dir")
+            (cd "$parent" && zip -qr "$GITHUB_WORKSPACE/dist/$skill.zip" "$skill")
+          done
+          ls dist
+      - name: Publish to the skills-latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view skills-latest >/dev/null 2>&1; then
+            gh release create skills-latest --title "Skills (latest)" --notes "One zip per skill, rebuilt every time a skill changes. In Claude: Settings, Capabilities, Skills, then upload the zip."
+          fi
+          gh release upload skills-latest dist/*.zip --clobber

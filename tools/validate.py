@@ -2,9 +2,11 @@
 """Checks the library's format and looks for anything unsafe. Run before opening a pull request:
 
   python3 tools/validate.py
+  python3 tools/validate.py --changed <file> --by <github login>   # also check a pull request only touches its own folder
 
 Errors fail the check. Warnings are for the reviewer, and don't fail it.
 """
+import argparse
 import os
 import re
 import sys
@@ -21,7 +23,24 @@ UNSAFE = [
     (re.compile(r"\b(curl|wget)\b[^\n]*(-d|--data|-X\s*POST)", re.I), "sends data to a URL"),
 ]
 
+TEAM = {"freddiehoj", "axcrump", "nickblack", "github-actions[bot]"}
 errors, warnings = [], []
+
+
+def check_changes(changed_file, by):
+    """A contributor's pull request may only touch their own skills/<them>/ folder."""
+    if by in TEAM:
+        return
+    paths = [p.strip() for p in open(changed_file) if p.strip()]
+    owners = set()
+    for p in paths:
+        parts = p.split("/")
+        if len(parts) >= 3 and parts[0] == "skills":
+            owners.add(parts[1])
+        else:
+            errors.append(f"{p}: only the Objective0 team changes this. Add your skill in skills/<your-name>/")
+    if len(owners) > 1:
+        errors.append(f"this pull request touches more than one author's folder ({', '.join(sorted(owners))}); keep it to your own")
 
 
 def front(path):
@@ -40,6 +59,12 @@ def front(path):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--changed", help="a file listing the paths a pull request changes")
+    ap.add_argument("--by", default="", help="the GitHub login of the pull request's author")
+    a = ap.parse_args()
+    if a.changed:
+        check_changes(a.changed, a.by)
     if not os.path.isdir(SKILLS):
         sys.exit("No skills/ folder.")
     seen = {}
